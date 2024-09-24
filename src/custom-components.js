@@ -79,7 +79,7 @@ export const Slider = ({ min, max, value, onChange, onChangeStart }) => {
     return (
         <div
             ref={sliderRef}
-            className={`relative w-full h-6 cursor-pointer ${isDragging ? 'cursor-grabbing' : 'cursor-pointer'}`}
+            className={`relative w-full h-6 cursor-pointer ${isDragging ? 'cursor-ew-resize' : 'cursor-ew-resize'}`}
             onMouseDown={handleMouseDown}
             onTouchStart={handleMouseDown} // Handle touch start
         >
