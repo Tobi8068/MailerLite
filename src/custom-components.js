@@ -23,52 +23,59 @@ export const Switch = ({ checked, onChange }) => {
 }
 
 export const Slider = ({ min, max, value, onChange }) => {
-    const sliderRef = useRef(null)
-    const [isDragging, setIsDragging] = useState(false)
+    const sliderRef = useRef(null);
+    const [isDragging, setIsDragging] = useState(false);
 
     const handleMouseDown = useCallback(() => {
-        setIsDragging(true)
-    }, [])
+        setIsDragging(true);
+    }, []);
 
     const handleMouseUp = useCallback(() => {
-        setIsDragging(false)
-    }, [])
+        setIsDragging(false);
+    }, []);
 
-    const handleMouseMove = useCallback(
+    const handleMove = useCallback(
         (event) => {
             if (isDragging && sliderRef.current) {
-                const sliderRect = sliderRef.current.getBoundingClientRect()
-                const percentage = (event.clientX - sliderRect.left) / sliderRect.width
-                const newValue = Math.round(percentage * (max - min) + min)
-                onChange({ target: { value: Math.max(min, Math.min(max, newValue)) } })
+                const sliderRect = sliderRef.current.getBoundingClientRect();
+                // Use clientX for mouse events and touches for touch events
+                const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+                const percentage = (clientX - sliderRect.left) / sliderRect.width;
+                const newValue = Math.round(percentage * (max - min) + min);
+                onChange({ target: { value: Math.max(min, Math.min(max, newValue)) } });
             }
         },
         [isDragging, min, max, onChange]
-    )
+    );
 
     useEffect(() => {
-        document.addEventListener('mousemove', handleMouseMove)
-        document.addEventListener('mouseup', handleMouseUp)
+        // Mouse events
+        document.addEventListener('mousemove', handleMove);
+        document.addEventListener('mouseup', handleMouseUp);
 
         // Touch events
-        document.addEventListener('touchmove', handleMouseMove);
+        document.addEventListener('touchmove', handleMove);
         document.addEventListener('touchend', handleMouseUp);
-        return () => {
-            document.removeEventListener('mousemove', handleMouseMove)
-            document.removeEventListener('mouseup', handleMouseUp)
-            document.removeEventListener('touchmove', handleMouseMove);
-            document.removeEventListener('touchend', handleMouseUp);
-        }
-    }, [handleMouseMove, handleMouseUp])
 
-    const percentage = ((value - min) / (max - min)) * 100
+        return () => {
+            // Clean up mouse events
+            document.removeEventListener('mousemove', handleMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+
+            // Clean up touch events
+            document.removeEventListener('touchmove', handleMove);
+            document.removeEventListener('touchend', handleMouseUp);
+        };
+    }, [handleMove, handleMouseUp]);
+
+    const percentage = ((value - min) / (max - min)) * 100;
 
     return (
         <div
             ref={sliderRef}
             className="relative w-full h-6 cursor-pointer"
             onMouseDown={handleMouseDown}
-            onTouchStart={handleMouseDown}
+            onTouchStart={handleMouseDown} // Handle touch start
         >
             <div className="absolute w-full h-2 bg-gray-200 rounded-full top-1/2 transform -translate-y-1/2">
                 <div
@@ -81,5 +88,5 @@ export const Slider = ({ min, max, value, onChange }) => {
                 style={{ left: `${percentage}%` }}
             ></div>
         </div>
-    )
-}
+    );
+};
