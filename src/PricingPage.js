@@ -38,6 +38,11 @@ export default function PricingPage() {
   const [isMonthlyBilled, setIsMonthlyBilled] = useState(true);
   const [users, setUsers] = useState(1);
   const [monthlyBilled, setMonthlyBilled] = useState([350.00, 250.00]);
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    console.log('isDragging', isDragging)
+  }, [isDragging])
 
   useEffect(() => {
     setUsers(Math.floor(familyMembers / 10000));
@@ -65,7 +70,7 @@ export default function PricingPage() {
   }
 
   return (
-    <div className={`min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 no-select`}>
+    <div className={`min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8 ${isDragging ? "no-select" : ""}`}>
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-8">Choreless comitative Pricing</h1>
         
@@ -94,6 +99,7 @@ export default function PricingPage() {
                   max={100000}
                   min={20000}
                   className="w-64"
+                  onChangeStart={(state) => setIsDragging(state)}
                 />
                 <span className="text-sm">10+</span>
                 <span className="bg-purple-600 text-white text-sm font-bold px-3 py-1 rounded-full">

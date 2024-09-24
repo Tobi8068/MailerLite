@@ -22,12 +22,13 @@ export const Switch = ({ checked, onChange }) => {
     )
 }
 
-export const Slider = ({ min, max, value, onChange }) => {
+export const Slider = ({ min, max, value, onChange, onChangeStart }) => {
     const sliderRef = useRef(null);
     const [isDragging, setIsDragging] = useState(false);
 
     const handleMouseDown = useCallback((event) => {
         setIsDragging(true);
+        onChangeStart(true);
         if (event.target === sliderRef.current) {
             event.preventDefault(); 
         }
@@ -35,6 +36,7 @@ export const Slider = ({ min, max, value, onChange }) => {
 
     const handleMouseUp = useCallback(() => {
         setIsDragging(false);
+        onChangeStart(false);
     }, []);
 
     const handleMove = useCallback(

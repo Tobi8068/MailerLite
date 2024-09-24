@@ -62,7 +62,7 @@ export default function Pricing() {
     const handleSliderChange = useCallback((e) => {
         const emailNum = Number(e.target.value);
         setEmailCount(emailNum);
-        if (emailNum == 3000) {
+        if (emailNum === 3000) {
             setPricingTiers(initialState);
         } else if (emailNum <= 50000) {
             setPricingTiers(State50K);
