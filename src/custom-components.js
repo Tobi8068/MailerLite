@@ -28,20 +28,24 @@ export const Slider = ({ min, max, value, onChange }) => {
 
     const handleMouseDown = useCallback((event) => {
         setIsDragging(true);
-        event.preventDefault(); // Prevent default action
+        if (event.target === sliderRef.current) {
+            event.preventDefault(); // Prevent default action only if necessary
+        }
     }, []);
 
-    const handleMouseUp = useCallback((event) => {
+    const handleMouseUp = useCallback(() => {
         setIsDragging(false);
-        event.preventDefault(); // Prevent default action
     }, []);
 
     const handleMove = useCallback(
         (event) => {
             if (isDragging && sliderRef.current) {
-                // Prevent text selection
-                event.preventDefault();
+                // Check if the user is selecting text
+                if (window.getSelection().toString().length > 0) {
+                    return; // Allow text selection
+                }
 
+                event.preventDefault(); // Prevent default action only when dragging
                 const sliderRect = sliderRef.current.getBoundingClientRect();
                 const clientX = event.touches ? event.touches[0].clientX : event.clientX;
                 const percentage = (clientX - sliderRect.left) / sliderRect.width;
@@ -54,9 +58,10 @@ export const Slider = ({ min, max, value, onChange }) => {
     );
 
     useEffect(() => {
+        // Use passive: false for touch events if you need preventDefault
         document.addEventListener('mousemove', handleMove);
         document.addEventListener('mouseup', handleMouseUp);
-        document.addEventListener('touchmove', handleMove);
+        document.addEventListener('touchmove', handleMove, { passive: false }); // Mark as non-passive
         document.addEventListener('touchend', handleMouseUp);
 
         return () => {
@@ -72,7 +77,7 @@ export const Slider = ({ min, max, value, onChange }) => {
     return (
         <div
             ref={sliderRef}
-            className={`relative w-full h-6 cursor-pointer ${isDragging ? 'cursor-ew-resize' : 'cursor-ew-resize'}`} // Change cursor style
+            className={`relative w-full h-6 cursor-pointer ${isDragging ? 'cursor-grabbing' : 'cursor-pointer'}`}
             onMouseDown={handleMouseDown}
             onTouchStart={handleMouseDown} // Handle touch start
         >
