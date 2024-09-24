@@ -49,9 +49,15 @@ export const Slider = ({ min, max, value, onChange }) => {
     useEffect(() => {
         document.addEventListener('mousemove', handleMouseMove)
         document.addEventListener('mouseup', handleMouseUp)
+
+        // Touch events
+        document.addEventListener('touchmove', handleMouseMove);
+        document.addEventListener('touchend', handleMouseUp);
         return () => {
             document.removeEventListener('mousemove', handleMouseMove)
             document.removeEventListener('mouseup', handleMouseUp)
+            document.removeEventListener('touchmove', handleMouseMove);
+            document.removeEventListener('touchend', handleMouseUp);
         }
     }, [handleMouseMove, handleMouseUp])
 
@@ -62,6 +68,7 @@ export const Slider = ({ min, max, value, onChange }) => {
             ref={sliderRef}
             className="relative w-full h-6 cursor-pointer"
             onMouseDown={handleMouseDown}
+            onTouchStart={handleMouseDown}
         >
             <div className="absolute w-full h-2 bg-gray-200 rounded-full top-1/2 transform -translate-y-1/2">
                 <div
