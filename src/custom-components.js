@@ -29,7 +29,7 @@ export const Slider = ({ min, max, value, onChange }) => {
     const handleMouseDown = useCallback((event) => {
         setIsDragging(true);
         if (event.target === sliderRef.current) {
-            event.preventDefault(); // Prevent default action only if necessary
+            event.preventDefault(); 
         }
     }, []);
 
