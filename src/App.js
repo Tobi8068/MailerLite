@@ -4,7 +4,7 @@ import PricingPage from './PricingPage';
 function App() {
   return (
     <div className="App">
-      <PricingPage></PricingPage>
+      <PricingPage />
     </div>
   );
 }
