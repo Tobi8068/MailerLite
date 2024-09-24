@@ -56,7 +56,7 @@ const Slider = ({ min, max, value, onChange }) => {
     )
 }
 
-export default function PricingPage() {
+export default function Pricing() {
     const [emailCount, setEmailCount] = useState(3000)
 
     const handleSliderChange = useCallback((e) => {
