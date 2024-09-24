@@ -34,7 +34,7 @@ const PricingCard = ({ title, price, originalPrice, description, features, cta, 
 
 export default function PricingPage() {
   const [isFamilyPlan, setIsFamilyPlan] = useState(true)
-  const [familyMembers, setFamilyMembers] = useState(20000)
+  const [familyMembers, setFamilyMembers] = useState(2)
   const [isMonthlyBilled, setIsMonthlyBilled] = useState(true);
   const [users, setUsers] = useState(1);
   const [monthlyBilled, setMonthlyBilled] = useState([350.00, 250.00]);
@@ -45,7 +45,7 @@ export default function PricingPage() {
   }, [isDragging])
 
   useEffect(() => {
-    setUsers(Math.floor(familyMembers / 10000));
+    setUsers(Math.floor(familyMembers / 1));
   }, [familyMembers]);
 
   const handleSliderChange = (e) => {
@@ -65,8 +65,8 @@ export default function PricingPage() {
 
   const handlePlanChange = (checked) => {
     setIsFamilyPlan(checked)
-    if (isFamilyPlan) setFamilyMembers(10000)
-    else setFamilyMembers(20000)
+    if (isFamilyPlan) setFamilyMembers(1)
+    else setFamilyMembers(2)
   }
 
   return (
@@ -96,8 +96,8 @@ export default function PricingPage() {
                 <Slider
                   value={[familyMembers]}
                   onChange={handleSliderChange}
-                  max={100000}
-                  min={20000}
+                  max={10}
+                  min={2}
                   className="w-64"
                   onChangeStart={(state) => setIsDragging(state)}
                 />
